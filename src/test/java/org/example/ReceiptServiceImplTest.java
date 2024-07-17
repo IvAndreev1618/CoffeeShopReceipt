@@ -1,12 +1,8 @@
 package org.example;
 
-import org.example.exception.ProductValidationException;
 import org.example.input.Input;
 import org.example.input.InputItem;
 import org.example.order.Order;
-import org.example.order.OrderItem;
-import org.example.order.OrderProduct;
-import org.example.product.ProductType;
 import org.example.service.OrderManagementService;
 import org.example.service.ProductManagementService;
 import org.example.service.ReceiptService;
@@ -15,11 +11,9 @@ import org.example.service.implementation.ProductManagementServiceImpl;
 import org.example.service.implementation.ReceiptServiceImpl;
 import org.junit.jupiter.api.Test;
 
-import java.math.BigDecimal;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 
 class ReceiptServiceImplTest {
 
