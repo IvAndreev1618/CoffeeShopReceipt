@@ -5,6 +5,7 @@ import org.example.order.OrderItem;
 import org.example.order.OrderProduct;
 import org.example.product.ProductType;
 import org.example.service.ReceiptService;
+import org.example.service.implementation.ReceiptServiceImpl;
 import org.junit.jupiter.api.Test;
 
 import java.math.BigDecimal;
@@ -12,9 +13,9 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-class ReceiptServiceTest {
+class ReceiptServiceImplTest {
 
-    private final ReceiptService receiptService = new ReceiptService();
+    private final ReceiptService receiptService = new ReceiptServiceImpl();
 
     @Test
     void testGenerateReceipt() {

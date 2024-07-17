@@ -6,6 +6,8 @@ import org.example.input.InputItem;
 import org.example.order.Order;
 import org.example.service.OrderManagementService;
 import org.example.service.ProductManagementService;
+import org.example.service.implementation.OrderManagementServiceImpl;
+import org.example.service.implementation.ProductManagementServiceImpl;
 import org.junit.jupiter.api.Test;
 
 import java.math.BigDecimal;
@@ -16,10 +18,10 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-class OrderManagementServiceTest {
+class OrderManagementServiceImplTest {
 
-    private final ProductManagementService productManagementService = new ProductManagementService();
-    private final OrderManagementService orderManagementService = new OrderManagementService(productManagementService);
+    private final ProductManagementService productManagementService = new ProductManagementServiceImpl();
+    private final OrderManagementService orderManagementService = new OrderManagementServiceImpl(productManagementService);
 
     @Test
     void testBasicInput() {

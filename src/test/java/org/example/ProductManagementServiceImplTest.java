@@ -3,6 +3,7 @@ package org.example;
 import org.example.product.Product;
 import org.example.product.ProductType;
 import org.example.service.ProductManagementService;
+import org.example.service.implementation.ProductManagementServiceImpl;
 import org.junit.jupiter.api.Test;
 
 import java.math.BigDecimal;
@@ -13,9 +14,9 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-class ProductManagementServiceTest {
+class ProductManagementServiceImplTest {
 
-    private final ProductManagementService productManagementService = new ProductManagementService();
+    private final ProductManagementService productManagementService = new ProductManagementServiceImpl();
 
     @Test
     void testGetProducts() {

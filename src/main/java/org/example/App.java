@@ -6,14 +6,17 @@ import org.example.order.Order;
 import org.example.service.OrderManagementService;
 import org.example.service.ProductManagementService;
 import org.example.service.ReceiptService;
+import org.example.service.implementation.OrderManagementServiceImpl;
+import org.example.service.implementation.ProductManagementServiceImpl;
+import org.example.service.implementation.ReceiptServiceImpl;
 
 import java.util.Arrays;
 import java.util.List;
 
 public class App {
-    private static final ProductManagementService productManagementService = new ProductManagementService();
-    private static final OrderManagementService orderManagementService = new OrderManagementService(productManagementService);
-    private static final ReceiptService receiptService = new ReceiptService();
+    static ProductManagementService productManagementService = new ProductManagementServiceImpl();
+    static OrderManagementService orderManagementService = new OrderManagementServiceImpl(productManagementService);
+    static ReceiptService receiptService = new ReceiptServiceImpl();
 
     public static void main(String[] args) {
 
