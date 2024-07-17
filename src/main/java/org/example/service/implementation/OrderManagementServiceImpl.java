@@ -38,30 +38,40 @@ public class OrderManagementServiceImpl implements OrderManagementService {
         return new Order(products, stamps);
     }
 
-    /*
-     * Validates that input is correct
-     */
-    private void validateInputOrder(Input input) throws ProductValidationException {
-        input.getInputItems().forEach(this::validateProduct);
+    private void validateInputOrder(Input input) {
+        List<InputItem> nonValidProducts = input.getInputItems().stream()
+                .filter(inputItem -> !isValidProduct(inputItem))
+                .peek(inputItem -> System.out.println("System can not proceed with this product: " +
+                        inputItem.getProductName() +
+                        ", it will be excluded from the receipt"))
+                .collect(Collectors.toList());
+
+        input.getInputItems().removeIf(nonValidProducts::contains);
+
         validateExtraProducts(input);
     }
 
-    /*
-     * Validates products in input
-     */
-    private void validateProduct(InputItem item) {
-        if (!isValidProduct(item)) {
-            throw new ProductValidationException("Invalid product: " + item.getProductName() + " " + item.getSize());
-        }
+    private void validateExtraProducts(Input input) {
+        input.getInputItems().forEach(inputItem -> {
+            if (inputItem.getExtraProducts() != null) {
+                List<String> nonValidExtras = inputItem.getExtraProducts().stream()
+                        .filter(extra -> !isValidExtraProduct(extra))
+                        .peek(extra -> System.out.println("Extra product: " + extra +
+                                " for the product: " + inputItem.getProductName() +
+                                ", is not eligible and will be excluded from the receipt"))
+                        .collect(Collectors.toList());
+                inputItem.getExtraProducts().removeAll(nonValidExtras);
+            }
+        });
     }
 
-    /*
-     * Validates extra products in input
-     */
-    private void validateExtraProducts(Input input) {
-        if (!areExtraProductsEligible(input)) {
-            throw new ProductValidationException("Extra products can only be bought with standard products.");
-        }
+    private boolean isValidProduct(InputItem inputItem) {
+        return productManagementService.findProductByNameAndSize(inputItem.getProductName(), inputItem.getSize()).isPresent();
+    }
+
+    private boolean isValidExtraProduct(String extraProductName) {
+        return productManagementService.findExtraProducts().stream()
+                .anyMatch(product -> product.getName().equalsIgnoreCase(extraProductName));
     }
 
     /*
@@ -78,9 +88,11 @@ public class OrderManagementServiceImpl implements OrderManagementService {
      */
     private OrderItem convertInputItemToOrderItem(InputItem item) {
         OrderProduct orderProduct = productToOrderProduct(findProduct(item.getProductName(), item.getSize()));
-        List<OrderProduct> extras = item.getExtraProducts().stream()
+        List<OrderProduct> extras = item.getExtraProducts() != null
+                ? item.getExtraProducts().stream()
                 .map(extraProductName -> productToOrderProduct(findProduct(extraProductName, null)))
-                .collect(Collectors.toList());
+                .collect(Collectors.toList())
+                : new ArrayList<>();
         return new OrderItem(orderProduct, extras);
     }
 
@@ -91,22 +103,6 @@ public class OrderManagementServiceImpl implements OrderManagementService {
     private Product findProduct(String productName, String size) {
         return productManagementService.findProductByNameAndSize(productName, size)
                 .orElseThrow(() -> new ProductValidationException("Product not found: " + productName + (size != null ? " " + size : "")));
-    }
-
-    private boolean isValidProduct(InputItem inputOrderItem) {
-        return productManagementService.findProductByNameAndSize(inputOrderItem.getProductName(),
-                inputOrderItem.getSize()).isPresent();
-    }
-
-    private boolean areExtraProductsEligible(Input input) {
-        return input.getInputItems().stream()
-                .flatMap(item -> item.getExtraProducts().stream())
-                .allMatch(this::isValidExtraProduct);
-    }
-
-    private boolean isValidExtraProduct(String extraProductName) {
-        return productManagementService.findExtraProducts().stream()
-                .anyMatch(product -> product.getName().equalsIgnoreCase(extraProductName));
     }
 
     /*

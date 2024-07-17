@@ -22,6 +22,7 @@ public class ReceiptServiceImpl implements ReceiptService {
         receipt.append(LIMITER)
                 .append("Total: $")
                 .append(order.calculateTotal())
+                .append("\n")
                 .append(LIMITER)
                 .append("Current client stamps amount: ")
                 .append(order.getCurrentStampsAmount())

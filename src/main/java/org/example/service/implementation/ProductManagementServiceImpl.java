@@ -30,7 +30,7 @@ public class ProductManagementServiceImpl implements ProductManagementService {
         products.add(new Product("Orange Juice", new BigDecimal("3.95"), null, ProductType.BEVERAGE));
         products.add(new Product("Extra milk", new BigDecimal("0.32"), null, ProductType.EXTRA));
         products.add(new Product("Foamed milk", new BigDecimal("0.51"), null, ProductType.EXTRA));
-        products.add(new Product("Special roast coffee", new BigDecimal("0.95"), null, ProductType.EXTRA));
+        products.add(new Product("Special roast", new BigDecimal("0.95"), null, ProductType.EXTRA));
     }
 
     @Override
