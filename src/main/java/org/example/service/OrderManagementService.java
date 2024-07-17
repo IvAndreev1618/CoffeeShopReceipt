@@ -10,6 +10,7 @@ import org.example.product.Product;
 import org.example.product.ProductType;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -130,8 +131,9 @@ public class OrderManagementService {
         int snacksCount = getProductsByType(orderItems, ProductType.SNACK).size();
         int beverageSnackPairCount = Math.min(beveragesCount, snacksCount);
 
-        List<OrderProduct> extras = getProductsByType(orderItems, ProductType.EXTRA);
-        applyDiscountToProducts(extras, beverageSnackPairCount);
+        List<OrderProduct> extraProducts = new ArrayList<>();
+        orderItems.forEach(orderItem -> extraProducts.addAll(orderItem.getExtraOrderProducts()));
+        applyDiscountToProducts(extraProducts, beverageSnackPairCount);
     }
 
     private void applyDiscountToProducts(List<OrderProduct> products, int discountCount) {
